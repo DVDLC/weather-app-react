@@ -1,23 +1,37 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import PlaceCard from './components/finallyPlace';
+import Footer from './components/footer';
+import PlacesList from './components/placesList';
+import Search from './components/search';
+
 
 function App() {
-  return (
+
+  const [ data, setData ] = useState([]),
+      [ placeToSearch, setPlaceToSearch ] = useState(''),
+      [ finallyPlace, setFinanllyPlace ] = useState({})
+
+  useEffect(() => {
+
+    const chosenPlace = () => {
+      setFinanllyPlace(data.filter( place => place.name === placeToSearch ))
+    }
+
+    chosenPlace()
+    
+  },[ placeToSearch, data ])
+
+  console.log( data )
+  return ( 
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Search data={ setData }/>
+      <PlacesList 
+        data={ data }
+        placeToSearch={ setPlaceToSearch }
+      />
+      <PlaceCard data={ finallyPlace } />
+      <Footer />
     </div>
   );
 }
